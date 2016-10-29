@@ -30,6 +30,8 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs. 
 // ================================================================================
 
+
+//Test array for reservations. Will instead be populated with sql data. 
 var tableArr = [
 {
 	customerFirst: "Steve",
@@ -45,24 +47,37 @@ var tableArr = [
 }
 ];
 
+//Test array for waiting. 
+var waitingArr = [];
+
+//Takes the user to the inde page. FUNCTIONAL
 app.get("/", function(req, res){
 	res.sendFile(path.join(__dirname, 'home.html'));
 });
 
+//Lists the tables HTML to the page. FUNCTIONAL
 app.get("/tables", function(req, res){
 	res.sendFile(path.join(__dirname, 'tables.html'));
 });
 
+//Make a reservation. NOT FUNCTIONAL
 app.post("/reserve", function(req, res){
 	res.sendFile(path.join(__dirname, 'reserve.html'));
 	var newTable = req.body;
-	tableArr.push(req.body);
+	if(tableArr.length == 5){
+		waitingArr.push(req.body);
+	}
+	else{
+		tableArr.push(req.body);
+	}
 });
 
+//Searching for all tables. FUNCTIONAL
 app.get("/api/tables", function(req, res){
 	res.json(tableArr);
 });
 
+//Searching by ID. FUNCTIONAL
 app.get("/api/tables/:id?", function(req, res){
 	var id = req.params.id;
 	if (id){
