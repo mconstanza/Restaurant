@@ -85,12 +85,12 @@ app.get("/reserve", function(req, res){
 
 //Make a reservation. FUNCTIONAL
 app.post("/api/reserve", function(req, res){
-	var newTable = req.body;
-	if(tableArr.length == 5){
-		waitingArr.push(req.body);
+	console.log(req.query);
+	if(tableArr.length >= 5){
+		waitingArr.push(req.query);
 	}
 	else{
-		tableArr.push(req.body);
+		tableArr.push(req.query);
 	}
 });
 
