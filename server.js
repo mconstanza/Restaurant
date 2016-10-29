@@ -63,12 +63,17 @@ app.get("/api/tables", function(req, res){
 	res.json(tableArr);
 });
 
-app.get("/api/:id", function(req, res){
+app.get("/api/tables/:id?", function(req, res){
 	var id = req.params.id;
-	for(var i = 0; i <tableArr.length; i++){
+	if (id){
+		for(var i = 0; i <tableArr.length; i++){
 		if(tableArr[i].customerID == id){
 			res.json(tableArr[i]);
 		}
+	}
+	}
+	else{
+		res.json(tableArr);
 	}
 })
 
