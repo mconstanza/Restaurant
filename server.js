@@ -39,13 +39,17 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs. 
 // ================================================================================
 
-require('./app/routing/api-routes.js')(app); 
-require('./app/routing/html-routes.js')(app);
+app.get("/", function(req, res){
+	res.sendFile(path.join(__dirname, 'home.html'));
+});
 
+app.get("/tables", function(req, res){
+	res.sendFile(path.join(__dirname, 'tables.html'));
+});
 
-
-
-
+app.get("/reserve", function(req, res){
+	res.sendFile(path.join(__dirname, 'reserve.html'));
+});
 
 
 
