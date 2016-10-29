@@ -8,10 +8,6 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 
-
-
-
-
 // ==============================================================================
 // EXPRESS CONFIGURATION
 // This sets up the basic properties for our express server 
@@ -28,16 +24,26 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 
-
-
-
-
-
 // ================================================================================
 // ROUTER
 // The below points our server to a series of "route" files.
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs. 
 // ================================================================================
+
+var tableArr = [
+{
+	customerFirst: "Steve",
+	customerLast: "Freeman",
+	customerNum: 9085783770,
+	customerID: 1
+},
+{
+	customerFirst: "Mike",
+	customerLast: "Constanza",
+	customerNum: 111111,
+	customerID: 2
+}
+];
 
 app.get("/", function(req, res){
 	res.sendFile(path.join(__dirname, 'home.html'));
@@ -49,13 +55,18 @@ app.get("/tables", function(req, res){
 
 app.post("/reserve", function(req, res){
 	res.sendFile(path.join(__dirname, 'reserve.html'));
+	var newTable = req.body;
+	tableArr.push(req.body);
 });
 
 app.get("/api/tables", function(req, res){
-	res.json()
+	res.json(tableArr);
 });
 
-
+app.get("/api/:id", function(req, res){
+	var id = req.params.id;
+	res.send(id);
+})
 
 // ==============================================================================
 // LISTENER
