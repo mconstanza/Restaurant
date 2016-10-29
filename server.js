@@ -85,18 +85,20 @@ app.get("/reserve", function(req, res){
 
 //Make a reservation. FUNCTIONAL
 app.post("/api/reserve", function(req, res){
-	console.log(req.query);
+	var newTable = req.body; 
 	if(tableArr.length >= 5){
-		waitingArr.push(req.query);
+		waitingArr.push(newTable);
+		res.json(newTable);
 	}
 	else{
-		tableArr.push(req.query);
+		tableArr.push(newTable);
 	}
 });
 
 //Searching for all tables. FUNCTIONAL
 app.get("/api/tables", function(req, res){
-	res.json(tableArr);
+	var allArr = [tableArr, waitingArr];
+	res.json(allArr);
 });
 
 //Searching by ID. FUNCTIONAL
