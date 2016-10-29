@@ -8,10 +8,6 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 
-
-
-
-
 // ==============================================================================
 // EXPRESS CONFIGURATION
 // This sets up the basic properties for our express server 
@@ -28,26 +24,97 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 
-
-
-
-
-
 // ================================================================================
 // ROUTER
 // The below points our server to a series of "route" files.
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs. 
 // ================================================================================
 
-require('./app/routing/api-routes.js')(app); 
-require('./app/routing/html-routes.js')(app);
 
+//Test array for reservations. Will instead be populated with sql data. 
+var tableArr = [
+{
+	customerFirst: "Steve",
+	customerLast: "Freeman",
+	customerNum: 9085783770,
+	customerID: 1
+},
+{
+	customerFirst: "Mike",
+	customerLast: "Constanza",
+	customerNum: 111111,
+	customerID: 2
+},
+{
+	customerFirst: "Ravi",
+	customerLast: "Jogee",
+	customerNum: 222222,
+	customerID: 3
+},
+{
+	customerFirst: "Tariq",
+	customerLast: "Shaikh",
+	customerNum: 3333333,
+	customerID: 4
+},
+{
+	customerFirst: "Mike",
+	customerLast: "Amon",
+	customerNum: 444444,
+	customerID: 5
+}
+];
 
+//Test array for waiting. 
+var waitingArr = [];
 
+//Takes the user to the inde page. FUNCTIONAL
+app.get("/", function(req, res){
+	res.sendFile(path.join(__dirname, 'home.html'));
+});
 
+//Lists the tables HTML to the page. FUNCTIONAL
+app.get("/tables", function(req, res){
+	res.sendFile(path.join(__dirname, 'tables.html'));
+});
 
+//Lists the reservation page so that the user can fill out the form. FUNCTIONAL
+app.get("/reserve", function(req, res){
+	res.sendFile(path.join(__dirname, 'reserve.html'));
+});
 
+//Make a reservation. FUNCTIONAL
+app.post("/api/reserve", function(req, res){
+	var newTable = req.body; 
+	if(tableArr.length >= 5){
+		waitingArr.push(newTable);
+		res.json(newTable);
+	}
+	else{
+		tableArr.push(newTable);
+	}
+});
 
+//Searching for all tables. FUNCTIONAL
+app.get("/api/tables", function(req, res){
+	var allArr = [tableArr, waitingArr];
+	res.json(allArr);
+});
+
+//Searching by ID. FUNCTIONAL
+app.get("/api/tables/:id?", function(req, res){
+	var id = req.params.id;
+	if (id){
+		for(var i = 0; i <tableArr.length; i++){
+		if(tableArr[i].customerID == id){
+			res.json(tableArr[i]);
+		}
+	}
+	}
+	else{
+		res.json(tableArr);
+	}
+})
 
 // ==============================================================================
 // LISTENER
