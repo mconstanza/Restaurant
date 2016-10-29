@@ -44,6 +44,24 @@ var tableArr = [
 	customerLast: "Constanza",
 	customerNum: 111111,
 	customerID: 2
+},
+{
+	customerFirst: "Ravi",
+	customerLast: "Jogee",
+	customerNum: 222222,
+	customerID: 3
+},
+{
+	customerFirst: "Tariq",
+	customerLast: "Shaikh",
+	customerNum: 3333333,
+	customerID: 4
+},
+{
+	customerFirst: "Mike",
+	customerLast: "Amon",
+	customerNum: 444444,
+	customerID: 5
 }
 ];
 
@@ -60,9 +78,13 @@ app.get("/tables", function(req, res){
 	res.sendFile(path.join(__dirname, 'tables.html'));
 });
 
-//Make a reservation. NOT FUNCTIONAL
-app.post("/reserve", function(req, res){
+//Lists the reservation page so that the user can fill out the form. FUNCTIONAL
+app.get("/reserve", function(req, res){
 	res.sendFile(path.join(__dirname, 'reserve.html'));
+});
+
+//Make a reservation. FUNCTIONAL
+app.post("/api/reserve", function(req, res){
 	var newTable = req.body;
 	if(tableArr.length == 5){
 		waitingArr.push(req.body);
